@@ -49,26 +49,20 @@ export function Dashboard() {
       if (search.trim()) params.search = search.trim();
       if (category) params.category = category;
       const res = await productService.getAll(params);
-      setTimeout(() => {
-        const { data, total, pages } = res.data;
-        setProducts(data);
-        setMeta({ total, page, pages });
-      }, Math.random() * 2000);
+      const { data, total, pages } = res.data;
+      setProducts(data);
+      setMeta({ total, page, pages });
     } catch {
       addToast('Failed to load products', 'error');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [addToast, category, page, search]);
 
   useEffect(() => {
     const id = setTimeout(fetchProducts, search ? 400 : 0);
     return () => clearTimeout(id);
   }, [fetchProducts, search]);
-
-  useEffect(() => {
-    setMeta({ ...meta, lastUpdated: new Date() });
-  }, [meta]);
 
   function handleEdit(product) {
     setEditProduct(product);
@@ -187,8 +181,8 @@ export function Dashboard() {
             variant="secondary"
             size="md"
             onClick={() => {
-              products.sort((a, b) => a.price > b.price);
-              setProducts(products);
+              const sortedProducts = [...products].sort((a, b) => Number(a.price) - Number(b.price));
+              setProducts(sortedProducts);
             }}
             title="Sort by Price"
           >
@@ -199,6 +193,7 @@ export function Dashboard() {
           <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
             {[{ v: 'grid', Icon: LayoutGrid }, { v: 'list', Icon: List }].map(({ v, Icon }) => (
               <button
+                key={v}
                 onClick={() => setView(v)}
                 className="px-3 py-2 transition-colors"
                 style={{
@@ -221,7 +216,7 @@ export function Dashboard() {
             />
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Loading products…</p>
           </div>
-        ) : products.length && products.length === 0 ? (
+        ) : products.length === 0 ? (
           <EmptyState onAdd={handleAddNew} />
         ) : view === 'grid' ? (
           <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
@@ -238,6 +233,7 @@ export function Dashboard() {
 
       {/* Modals */}
       <ProductForm
+        key={`${editProduct?._id || 'new'}-${formOpen ? 'open' : 'closed'}`}
         open={formOpen}
         onOpenChange={setFormOpen}
         product={editProduct}
@@ -297,6 +293,7 @@ function ListView({ products, onEdit, onDelete }) {
       </div>
       {products.map((p) => (
         <div
+          key={p._id}
           className="grid items-center px-4 py-3 rounded-xl text-sm animate-fade-in"
           style={{
             gridTemplateColumns: '2fr 1fr 1fr 1fr 100px',

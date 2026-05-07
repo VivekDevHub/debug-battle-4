@@ -14,7 +14,7 @@ export function Pagination({ page, pages, onPageChange }) {
     }
   }
 
-  nums.reverse();
+  // nums.reverse();
 
   useEffect(() => {
     onPageChange(page);
