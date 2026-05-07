@@ -8,7 +8,7 @@
 
 ## Task Overview
 
-You have been provided with a broken frontend project that contains multiple bugs. Your task is to identify and fix all the issues by properly debugging the application and making it fully functional.
+You have been provided with a broken frontend project that contains multiple bugs. Your task is to identify and fix all the issues by properly debugging the application and making it fully functional...
 
 ---
 
