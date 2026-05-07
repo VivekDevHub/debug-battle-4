@@ -1,9 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/database');
-const productRoutes = require('./routes/productRoutes');
-const errorHandler = require('./middleware/errorHandler');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/database");
+const productRoutes = require("./routes/productRoutes");
+const errorHandler = require("./middleware/errorHandler");
 
 // Connect to database
 connectDB();
@@ -16,15 +16,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/products', productRoutes);
+app.use("/api/products", productRoutes);
 
 // Health check route
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    message: 'Product Management API',
-    version: '1.0.0',
+    message: "Product Management API",
+    version: "1.0.0",
     endpoints: {
-      products: '/api/products',
+      products: "/api/products",
     },
   });
 });

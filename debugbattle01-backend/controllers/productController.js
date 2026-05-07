@@ -1,4 +1,4 @@
-const Product = require('../models/Product');
+const Product = require("../models/Product");
 
 // @desc    Get all products with search, filter, and pagination
 // @route   GET /api/products
@@ -12,7 +12,7 @@ const getProducts = async (req, res, next) => {
 
     // Search by name (case-insensitive)
     if (search) {
-      query.name = { $regex: search, $options: 'i' };
+      query.name = { $regex: search, $options: "i" };
     }
 
     // Filter by category
@@ -57,7 +57,7 @@ const getProductById = async (req, res, next) => {
     if (!product) {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
 
@@ -66,10 +66,10 @@ const getProductById = async (req, res, next) => {
       data: product,
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
+    if (error.kind === "ObjectId") {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
     next(error);
@@ -87,7 +87,7 @@ const createProduct = async (req, res, next) => {
     if (!name || !price) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide name and price',
+        message: "Please provide name and price",
       });
     }
 
@@ -104,11 +104,11 @@ const createProduct = async (req, res, next) => {
       data: product,
     });
   } catch (error) {
-    if (error.name === 'ValidationError') {
+    if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((err) => err.message);
       return res.status(400).json({
         success: false,
-        message: messages.join(', '),
+        message: messages.join(", "),
       });
     }
     next(error);
@@ -127,7 +127,7 @@ const updateProduct = async (req, res, next) => {
     if (!product) {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
 
@@ -138,7 +138,7 @@ const updateProduct = async (req, res, next) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     res.status(200).json({
@@ -146,17 +146,17 @@ const updateProduct = async (req, res, next) => {
       data: product,
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
+    if (error.kind === "ObjectId") {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
-    if (error.name === 'ValidationError') {
+    if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((err) => err.message);
       return res.status(400).json({
         success: false,
-        message: messages.join(', '),
+        message: messages.join(", "),
       });
     }
     next(error);
@@ -173,7 +173,7 @@ const deleteProduct = async (req, res, next) => {
     if (!product) {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
 
@@ -181,14 +181,14 @@ const deleteProduct = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product deleted successfully',
+      message: "Product deleted successfully",
       data: {},
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
+    if (error.kind === "ObjectId") {
       return res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
     next(error);
